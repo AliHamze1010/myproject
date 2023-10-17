@@ -1,11 +1,15 @@
 import React from 'react';
-import './About.css';
+import styles from './About.css'
+import { Link } from "react-router-dom";
 
 function AboutPage() {
     return (
         <div className="about-container">
             <header>
-                <h1>Score Simplified</h1>
+                {/* Wrap the logo text in a Link component */}
+                <h1>
+                    <Link to="/" className={styles.logoLink}>Score Simplified</Link>
+                </h1>
             </header>
             
             <section className="quote-section">
@@ -32,3 +36,4 @@ function AboutPage() {
 }
 
 export default AboutPage;
+

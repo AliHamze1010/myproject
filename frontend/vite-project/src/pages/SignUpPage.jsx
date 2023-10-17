@@ -1,23 +1,53 @@
 import React, { useState } from 'react';
-import styles from './SignUpPage.css'
+import styles from './SignUpPage.css';
+import { Link } from "react-router-dom";
+import axios from 'axios';  // Import axios
 
 function SignupComponent() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [retypePassword, setRetypePassword] = useState('');
+    
 
     const handleSignup = () => {
         if (password !== retypePassword) {
             alert('Passwords do not match!');
             return;
         }
-        // Handle signup logic here
+
+        // Make an API call to register the user
+        axios.post('http://localhost:5000/signup', {
+            username: name,
+            email: email,
+            password: password
+        })
+        .then(response => {
+            // Handle the success case
+            alert(response.data.message);
+            
+        })
+        .catch(error => {
+            // Handle the error case
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                alert(error.response.data.message);
+            } else if (error.request) {
+                // The request was made but no response was received
+                alert('Server did not respond. Please try again later.');
+            } else {
+                // Something happened in setting up the request that triggered an error
+                alert('Error during the request. Please try again.');
+            }
+        });
     };
 
     return (
         <div className="signup-container">
-            <h1>Score Simplified</h1>
+            <Link to="/" className="logoLink">
+                <h1>Score Simplified</h1>
+            </Link>
 
             <div className="input-group">
                 <label htmlFor="name">Name</label>
@@ -67,7 +97,7 @@ function SignupComponent() {
 
             <footer>
                 <p>2023 Score Simplified All Rights reserved</p>
-                <a href="#">About us</a>
+                <Link to="/About">About us</Link>
             </footer>
         </div>
     );

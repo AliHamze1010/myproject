@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ForgotPassword.css';
+import { Link } from "react-router-dom";
 
 function PasswordResetComponent() {
     const [email, setEmail] = useState('');
@@ -12,15 +13,13 @@ function PasswordResetComponent() {
             return;
         }
         // Handle password reset logic here
-
-        
-
-
     };
 
     return (
         <div className="reset-container">
-            <h1>Score Simplified</h1>
+            <Link to="/" className="logoLink">
+                <h1>Score Simplified</h1>
+            </Link>
 
             <div className="input-group">
                 <label htmlFor="email">Email</label>
@@ -59,7 +58,7 @@ function PasswordResetComponent() {
 
             <footer>
                 <p>2023 Score Simplified All Rights reserved</p>
-                <a href="#">About us</a>
+                <Link to="/About">About us</Link>
             </footer>
         </div>
     );

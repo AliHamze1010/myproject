@@ -1,57 +1,56 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from './HomePage.css'
+import styles from './HomePage.css';
+import { Link } from "react-router-dom";
 
 function HomePage() {
-    const teams = [
-        {
-            name: "Manchester United",
-            logo: "path_to_manchester_united_logo.png",
-            score: "03 - 01",
-            opponentName: "Chealse",
-            opponentLogo: "path_to_chealse_logo.png"
-        },
-        {
-            name: "Raptors",
-            logo: "path_to_raptors_logo.png",
-            score: "102 - 96",
-            opponentName: "Knicks",
-            opponentLogo: "path_to_knicks_logo.png"
-        }
-    ];
+    const [matches, setMatches] = useState([]);
 
     useEffect(() => {
         axios.get('http://localhost:5000/matches')
-            .then(response => console.log(response.data.data))
+            .then(response => {
+                setMatches(response.data.data);
+            })
             .catch(error => console.log(error));
+    }, []);
+
+    const getScore = (scores, participant) => {
+        return scores
+            .filter(score => score.participant === participant)
+            .reduce((total, score) => total + score.goals, 0);
     }
-    , []);
 
     return (
         <div className="score-simplified-container">
             <header>
-                <h1>Score Simplified</h1>
+                <Link to="/" className="logoLink"><h1>Score Simplified</h1></Link>
                 <button>Settings</button>
             </header>
 
-            <h2>Favorite Teams</h2>
-            <div className="teams">
-                {teams.map((team, index) => (
-                    <div key={index} className="team">
-                        <div className="team-logo">
-                            <img src={team.logo} alt={team.name} />
+            <h2>Favorite Matches</h2>
+
+            {/* New container for API data */}
+            <div className="api-data-container">
+                <div className="teams">
+                    {matches.map((match, index) => (
+                        <div key={index} className="match">
+                            <div className="team-name">
+                                {match.name.split(" vs ")[0]} 
+                            </div>
+                            <div className="score">
+                                {getScore(match.scores, 'home')} - {getScore(match.scores, 'away')}
+                            </div>
+                            <div className="opponent-name">
+                                {match.name.split(" vs ")[1]} 
+                            </div>
                         </div>
-                        <div className="score">{team.score}</div>
-                        <div className="opponent-logo">
-                            <img src={team.opponentLogo} alt={team.opponentName} />
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
 
             <footer>
                 <p>2023 Score Simplified All Rights reserved</p>
-                <a href="#">About us</a>
+                <Link to="/About">About</Link>
             </footer>
         </div>
     );
