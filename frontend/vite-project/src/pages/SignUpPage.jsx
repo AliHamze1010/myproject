@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './SignUpPage.css';
 import { Link } from "react-router-dom";
-import axios from 'axios';  // Import axios
+import axios from 'axios';
 
 function SignupComponent() {
     const [name, setName] = useState('');
@@ -26,18 +26,19 @@ function SignupComponent() {
             // Handle the success case
             alert(response.data.message);
             
+            // Redirect to login page after 3 seconds
+            setTimeout(() => {
+                window.location.href = "http://localhost:5173/login";
+            }, 1500);
+            
         })
         .catch(error => {
             // Handle the error case
             if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
                 alert(error.response.data.message);
             } else if (error.request) {
-                // The request was made but no response was received
                 alert('Server did not respond. Please try again later.');
             } else {
-                // Something happened in setting up the request that triggered an error
                 alert('Error during the request. Please try again.');
             }
         });

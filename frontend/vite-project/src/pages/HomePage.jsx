@@ -5,20 +5,34 @@ import { Link } from "react-router-dom";
 
 function HomePage() {
     const [matches, setMatches] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/matches')
+        axios.get('http://localhost:5000/matches?year=2023')
+
             .then(response => {
                 setMatches(response.data.data);
             })
-            .catch(error => console.log(error));
+            .catch(error => {
+                console.log(error);
+                setError('Failed to fetch matches data.');
+            });
     }, []);
 
-    const getScore = (scores, participant) => {
-        return scores
-            .filter(score => score.participant === participant)
-            .reduce((total, score) => total + score.goals, 0);
+    const getScore = (scores = [], participant) => {
+        // Debugging: Log the scores and participant to check their values.
+        console.log('Scores:', scores);
+        console.log('Participant:', participant);
+    
+        // Safely access scores, assuming it's an array.
+        const currentScores = scores.filter(score => score.description === "CURRENT");
+    
+        return currentScores
+            .filter(score => score.score.participant === participant)
+            .reduce((total, score) => total + score.score.goals, 0);
     }
+    
+    
 
     return (
         <div className="score-simplified-container">
@@ -29,7 +43,9 @@ function HomePage() {
 
             <h2>Favorite Matches</h2>
 
-            {/* New container for API data */}
+            {/* Display error if it exists */}
+            {error && <div className="error">{error}</div>}
+
             <div className="api-data-container">
                 <div className="teams">
                     {matches.map((match, index) => (

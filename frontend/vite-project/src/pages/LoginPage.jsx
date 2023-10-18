@@ -7,7 +7,7 @@ function LoginPage() {
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        // Your login logic here
+        window.location.href = "http://localhost:5173/";
     };
 
     return (
@@ -38,9 +38,9 @@ function LoginPage() {
                 />
             </div>
 
-            <button onClick={handleLogin}>Login</button> {/* Assuming this is the login button */}
-            <Link to="/signup">Sign up</Link> {/* Link to Sign Up page */}
-            <Link to="/forgotpassword">Forgot Password</Link> {/* Link to Forgot Password page */}
+            <button onClick={handleLogin}>Login</button>
+            <Link to="/signup">Sign up</Link>
+            <Link to="/forgotpassword">Forgot Password</Link>
 
             <footer>
                 <p>2023 Score Simplified All Rights reserved</p>
